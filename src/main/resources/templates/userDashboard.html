@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Milk and Payment History</title>
+    <style>
+        /* General Reset */
+        body, h1, h2, p, table {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body and Layout */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            height: 100vh;
+            color: #333;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: #00A859; /* Lively Green */
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            position: fixed;
+            height: 100%;
+            box-shadow: 4px 0 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            padding: 12px 0;
+            margin-bottom: 15px;
+            font-size: 18px;
+            text-align: center;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .sidebar a:hover {
+            background-color: #006F3D; /* Dark Green */
+        }
+
+        /* Main Content Area */
+        .main-content {
+            margin-left: 270px; /* Increased space between sidebar and main content */
+            width: calc(100% - 270px);
+            padding: 30px;
+            background-color: #FFFFFF;
+            border-radius: 8px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            height: 100%;
+            overflow-y: auto;
+        }
+
+        /* Page Title */
+        h2 {
+            color: #2d6a4f;
+            font-size: 28px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* Table */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 14px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #00A859; /* Lively Green */
+            color: white;
+        }
+
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+
+        /* Form Elements */
+        input[type="date"], button {
+            padding: 12px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            background-color: #f8f8f8;
+            margin-bottom: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="date"] {
+            width: 220px;
+            margin-right: 10px;
+        }
+
+        button {
+            background-color: #00A859; /* Lively Green */
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #006F3D; /* Dark Green */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 200px;
+            }
+            .main-content {
+                margin-left: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <h3 style="color: white; text-align: center;">Menu</h3>
+    <a href="#" th:href="@{/mainPage}">Logout</a>
+    <a href="#" th:href="@{/changePass/{id}(id=${User.getUser_id()})}">Change Password</a>
+    <!-- New Links -->
+    <a href="#" th:href="@{/productPage/{id}(id=${User.getUser_id()})}">View Products</a>
+    <a href="#" th:href="@{/orderHistory1}">View Order History</a>
+</div>
+
+<!-- Main Content Area -->
+<div class="main-content">
+    <!-- Page Title -->
+    <h2>Milk History</h2>
+
+    <!-- Date Filter for Milk History -->
+    <div>
+        <input type="number" th:value="${User.getUser_id()}" style="visibility: hidden;">
+        <label for="filterDate">Filter by Date:</label>
+       
+        <input type="date" id="filterDate" onchange="filterByDate()" />
+        <button onclick="filterByDate()">Filter</button>
+    </div>
+
+    <!-- Milk History Table -->
+    <table id="milkHistoryTable">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Milk Quantity</th>
+                <th>Total Rs</th>
+                <th>Rate</th>
+                <th>Degree</th>
+                <th>Fat</th>
+                <th>Name</th>
+                <th>Time</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="entry : ${milkHistory}" class="milk-history-row">
+                <td th:text="${entry.getDate()}"></td>
+                <td th:text="${entry.getQty()}"></td>
+                <td th:text="${entry.getTotal_rs()}"></td>
+                <td th:text="${entry.getRate()}"></td>
+                <td th:text="${entry.getDegree()}"></td>
+                <td th:text="${entry.getFat()}"></td>
+                <td th:text="${entry.getUname()}"></td>
+                <td th:text="${entry.getTime()}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Payment History Section -->
+    <h2>Payment History</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Amount</th>
+                <th>User Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="payment : ${paymentHistory}">
+                <td th:text="${payment.getStart_date()}"></td>
+                <td th:text="${payment.getEnd_date()}"></td>
+                <td th:text="${payment.getTotal_payment()}"></td>
+                <td th:text="${payment.getName()}"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // Function to filter Milk History based on the selected date
+    function filterByDate() {
+        const filterDate = document.getElementById("filterDate").value;
+        
+        // Get all rows of the milk history table
+        const rows = document.querySelectorAll("#milkHistoryTable tbody tr");
+
+        rows.forEach(row => {
+            const rowDate = row.cells[0].textContent.trim(); // Get date from the first column (Date)
+            
+            // If the selected date matches the row's date, show it, otherwise hide it
+            if (filterDate === "" || rowDate === filterDate) {
+                row.style.display = ""; // Show the row
+            } else {
+                row.style.display = "none"; // Hide the row
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Payment Page</title>
+<style>
+body {
+	font-family: 'Arial', sans-serif;
+	background-color: #f4f4f9;
+	margin: 0;
+	padding: 0;
+}
+
+.container {
+	max-width: 600px;
+	margin: 50px auto;
+	background-color: #fff;
+	padding: 30px;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+	text-align: center;
+	color: #333;
+	font-size: 24px;
+	margin-bottom: 30px;
+}
+
+.form-group {
+	margin-bottom: 20px;
+}
+
+.form-group label {
+	font-size: 16px;
+	color: #555;
+	margin-bottom: 5px;
+	display: block;
+}
+
+.form-group input {
+	width: 100%;
+	padding: 10px;
+	font-size: 16px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	background-color: #f9f9f9;
+}
+
+.form-group input[readonly] {
+	background-color: #e9e9e9;
+}
+
+.form-group button {
+	width: 100%;
+	padding: 12px;
+	font-size: 16px;
+	background-color: #4CAF50;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+.form-group button:hover {
+	background-color: #45a049;
+}
+
+.form-group .view-button {
+	width: auto;
+	display: inline-block;
+	background-color: #007BFF;
+}
+
+.form-group .view-button:hover {
+	background-color: #0056b3;
+}
+
+.form-group .button-container {
+	display: flex;
+	justify-content: space-between;
+}
+
+.form-group .date-input {
+	width: 48%;
+}
+</style>
+</head>
+<body>
+
+	<div class="container">
+		<h2>Payment Portal</h2>
+		<div th:if="${param.success}">
+        <p th:text="${message}" style="color: green;"></p>
+        </div>
+        <div th:if="${param.error}">
+        <p th:text="${message}" style="color: green;"></p>
+        </div>
+<form th:action="@{/paymentRequest}" method="post">
+	<div class="form-group">
+	    <label for="userID">Enter ID:</label>
+	    <input type="text" id="userID" name="userId" th:value="${userId}" required>
+	</div>
+
+		<div class="form-group">
+			<label for="startDate">Start Date:</label> <input type="date"
+				id="startDate" name="startDate" th:value="${satrtDate}" readonly>
+			<!-- Replace the value above with the fetched start date from the database -->
+		</div>
+
+		<div class="form-group">
+			<label for="endDate">End Date:</label> <input type="date"
+				id="endDate" name="endDate" required>
+		</div>
+
+		<div class="form-group">
+			<button type="submit" onclick="makePayment()">Make Payment</button>
+		</div>
+		</form>
+		
+	</div>
+
+	<script>
+		function viewID() {
+			// Code to handle viewing the ID (could show info, validate, etc.)
+			alert('ID viewed successfully!');
+		}
+
+		function makePayment() {
+			// Code to handle the payment process
+			alert('Payment process initiated!');
+		}
+		
+
+	
+	    function submitForm(event) {
+	        event.preventDefault();  // Prevent the default form submission
+
+	        // Get the value of the userID input field
+	        var userID = document.getElementById("userID").value;
+
+	        // Check if userID is provided
+	        if (!userID) {
+	            alert("Please enter a user ID.");
+	            return;
+	        }
+
+	        // Set the form action dynamically with the userID value
+	        var form = document.getElementById("viewForm");
+	        form.action = "/view/" + userID; // Update the action to include userID in the path
+
+	        // Submit the form after updating the action
+	        form.submit();
+	    }
+	
+
+	</script>
+</body>
+</html>

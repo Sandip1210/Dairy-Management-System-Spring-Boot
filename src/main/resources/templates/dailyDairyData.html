@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Dairy Records</title>
+    <style>
+        /* Internal CSS for Styling the page */
+        body {
+            background-color: #f4f7fc;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            margin: auto;
+            margin-top: 50px;
+        }
+
+        h2 {
+            color: #5a5a5a;
+            font-size: 30px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .filter-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .filter-container input {
+            padding: 8px;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            font-size: 16px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+        }
+
+        td {
+            text-align: center;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+            cursor: pointer;
+        }
+
+        .shadow-lg {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Daily Dairy Records</h2>
+        
+        <!-- Date Filter Section (For a single date) -->
+        <div class="filter-container">
+            <input type="date" id="filterDate" placeholder="Select Date">
+            <button onclick="filterData()">Filter</button>
+        </div>
+        
+        <!-- Table to display daily dairy records -->
+        <table class="shadow-lg" id="dairyRecordsTable">
+            <thead>
+                <tr>
+                    <th scope="col">Record ID</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Total Customers</th>
+                    <th scope="col">Total Milk (Liters)</th>
+                    <th scope="col">Total Rs</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Thymeleaf: Iterating through the daily dairy records list -->
+                <tr th:each="record : ${getDairyRecords}">
+                    <td th:text="${record.getRecord_id()}"></td>
+                    <td th:text="${record.getDate()}"></td>
+                    <td th:text="${record.getTotal_cust()}"></td>
+                    <td th:text="${record.getTotal_milk()}"></td>
+                    <td th:text="${record.getTotal_rs()}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function filterData() {
+            // Get the selected date from the input
+            const selectedDate = document.getElementById("filterDate").value;
+
+            // Get all table rows
+            const rows = document.querySelectorAll("#dairyRecordsTable tbody tr");
+
+            // Loop through each row to check if it matches the selected date
+            rows.forEach(row => {
+                const rowDate = row.cells[1].textContent.trim(); // The second column is Date
+
+                // Convert the row's date to a comparable format (ISO format)
+                const rowDateObj = new Date(rowDate);
+                const selectedDateObj = selectedDate ? new Date(selectedDate) : null;
+
+                // Show or hide the row based on whether the date matches
+                if (selectedDateObj && rowDateObj.toDateString() === selectedDateObj.toDateString()) {
+                    row.style.display = ""; // Show row
+                } else {
+                    row.style.display = "none"; // Hide row
+                }
+            });
+        }
+    </script>
+</body>
+</html>

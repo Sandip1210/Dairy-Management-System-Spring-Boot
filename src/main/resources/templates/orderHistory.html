@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History - Admin</title>
+    <style>
+        /* Add some basic styles */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .accept-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .accept-btn:hover {
+            background-color: #45a049;
+        }
+
+        .accepted-message {
+            color: green;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Order History</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>User Name</th>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th>Total Price</th>
+                <th>Address</th>
+                <th>Order Status</th>
+                <th>Action</th>
+                <th>Product Id</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Loop through all orders -->
+            <tr th:each="order : ${orderhistory}">
+                <td th:text="${order.orderID}"></td>
+                <td th:text="${order.ufullname}"></td>
+                <td th:text="${order.productname}"></td>
+                <td th:text="${order.quantity}"></td>
+                <td th:text="${order.price}"></td>
+                <td th:text="${order.totalPrice}"></td>
+                <td th:text="${order.address}"></td>
+                
+                <!-- Show Order Status as "Accepted" if the status is true -->
+                <td>
+                    <span th:if="${order.orderStatus == 'true'}" class="accepted-message" th:value="accepted">Accepted</span>
+                    <span th:if="${order.orderStatus != 'true'}" th:text="${order.orderStatus}"></span>
+                </td>
+                
+                <!-- Show Accept button only if OrderStatus is false -->
+                <td>
+                    <a th:if="${order.orderStatus == 'false'}" 
+                       th:href="@{/acceptOrder/{orderId}(orderId=${order.orderID})}"
+                       class="accept-btn">Accept</a>
+                </td>
+                
+                <td th:text="${order.proId}"></td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Milk History</title>
+    <style>
+        /* Internal CSS for Styling the page */
+        body {
+            background-color: #f4f7fc;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            margin: auto;
+            margin-top: 50px;
+        }
+
+        h2 {
+            color: #5a5a5a;
+            font-size: 30px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .filter-container {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .filter-container input {
+            padding: 8px;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            font-size: 16px;
+            border: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+            text-align: center;
+        }
+
+        td {
+            text-align: center;
+        }
+
+        tbody tr:hover {
+            background-color: #f1f1f1;
+            cursor: pointer;
+        }
+
+        .shadow-lg {
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Daily Milk History</h2>
+        
+        <!-- Date Filter Section (For a single date) -->
+        <div class="filter-container">
+            <input type="date" id="filterDate" placeholder="Select Date">
+            <button onclick="filterData()">Filter</button>
+        </div>
+        
+        <!-- Table to display daily milk history -->
+        <table class="shadow-lg" id="milkHistoryTable">
+            <thead>
+                <tr>
+                    <th scope="col">Milk ID</th>
+                    <th scope="col">Customer Name</th>
+                    <th scope="col">Liters</th>
+                    <th scope="col">Rate</th>
+                    <th scope="col">Total Rs</th>
+                    <th scope="col">Degree</th>
+                    <th scope="col">Time</th>
+                    <th scope="col">Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Thymeleaf: Iterating through the milk history list -->
+                <tr th:each="milk : ${getMilkHistory}">
+                    <td th:text="${milk.getMilk_id()}"></td>
+                    <td th:text="${milk.getUname()}"></td>
+                    <td th:text="${milk.getQty()}"></td>
+                    <td th:text="${milk.getRate()}"></td>
+                    <td th:text="${milk.getTotal_rs()}"></td>
+                    <td th:text="${milk.getDegree()}"></td>
+                    <td th:text="${milk.getTime()}"></td>
+                    <td th:text="${milk.getDate()}"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        function filterData() {
+            // Get the selected date from the input
+            const selectedDate = document.getElementById("filterDate").value;
+
+            // Get all table rows
+            const rows = document.querySelectorAll("#milkHistoryTable tbody tr");
+
+            // Loop through each row to check if it matches the selected date
+            rows.forEach(row => {
+                const rowDate = row.cells[7].textContent.trim(); // The 8th column is Date
+
+                // Convert the row's date to a comparable format (ISO format)
+                const rowDateObj = new Date(rowDate);
+                const selectedDateObj = selectedDate ? new Date(selectedDate) : null;
+
+                // Show or hide the row based on whether the date matches
+                if (selectedDateObj && rowDateObj.toDateString() === selectedDateObj.toDateString()) {
+                    row.style.display = ""; // Show row
+                } else {
+                    row.style.display = "none"; // Hide row
+                }
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Product</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .form-container {
+            width: 50%;
+            margin: auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-container input, .form-container textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .form-container button {
+            width: 100%;
+            padding: 12px;
+            color: white;
+            background-color: #4CAF50;
+            border: none;
+            cursor: pointer;
+        }
+        .form-container h2 {
+            text-align: center;
+            color: #333;
+        }
+        .form-container label {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Add New Product</h2>
+
+    <div class="form-container">
+        <form th:action="@{/addProducts}" method="post" th:object="${products}" enctype="multipart/form-data">
+            
+            <!-- Product Name -->
+            <label for="name">Product Name:</label>
+            <input type="text" name="name" id="name" placeholder="Enter product name" required />
+
+            <!-- Product Quantity -->
+            <label for="qty">Quantity:</label>
+            <input type="number" name="qty" id="qty" placeholder="Enter quantity" required />
+
+            <!-- Product Price -->
+            <label for="price">Price:</label>
+            <input type="number" name="price" id="price" placeholder="Enter price" required/>
+
+            <!-- Product Description -->
+            <label for="description">Description:</label>
+            <textarea name="description" id="description" placeholder="Enter product description" required ></textarea>
+
+            <!-- Image Filename (This will be replaced with file input) -->
+            <label for="imgfilename">Product Image:</label>
+            <input type="file" name="imgfilename" id="imgfilename" accept="image/*" required />
+
+            <!-- Submit Button -->
+            <button type="submit">Add Product</button>
+        </form>
+    </div>
+
+</body>
+</html>

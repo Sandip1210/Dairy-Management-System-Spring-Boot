@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dairy Management System</title>
+    <style>
+        /* General body and page layout */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        /* Navigation bar styling */
+        nav {
+            background-color: #34495e;
+            padding: 15px 30px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        nav .logo {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            text-decoration: none;
+            float: left;
+            margin-right: 50px;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        nav ul li {
+            margin: 0 15px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 12px 18px;
+            display: inline-block;
+            border-radius: 4px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Hover effect on menu items */
+        nav ul li a:hover {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        /* Active menu item styling */
+        nav ul li a.active {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        /* Section styling */
+        .section {
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+
+        /* Image Carousel with Arrows */
+        .carousel-container {
+            width: 100%;
+            max-width: 100%;
+            margin: auto;
+            position: relative;
+            display: block;
+        }
+
+        .carousel-img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        .arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 30px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            z-index: 100;
+        }
+
+        .left-arrow {
+            left: 10px;
+        }
+
+        .right-arrow {
+            right: 10px;
+        }
+
+        .login-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+
+        .login-btn:hover {
+            background-color: #45a049;
+        }
+
+        /* Service Section Styling */
+        .services-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive grid layout */
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .service-card {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .service-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover; /* Ensures image covers the container area */
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .service-card h3 {
+            font-size: 1.25rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .service-card p {
+            color: #777;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        /* About Us Section Styling */
+        #about {
+            background-color: #fff;
+            padding: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        #about h2 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        #about p {
+            font-size: 1.2rem;
+            color: #555;
+            line-height: 1.6;
+        }
+
+        /* Contact Section Styling */
+        #contact {
+            background-color: #fff;
+            padding: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        #contact h2 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        #contact p {
+            font-size: 1.2rem;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .contact-details {
+            font-size: 1.1rem;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Menu Bar -->
+    <nav>
+        <a href="#" class="logo">Dairy Management</a>
+        <ul>
+            <li><a href="#home" class="active">Home</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a th:href="@{/product}">Products</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a th:href="@{/}" class="login-btn">Login (User)</a></li>
+            <li><a th:href="@{/adminlogin1}" class="login-btn">Login (Admin)</a></li>
+        </ul>
+    </nav>
+
+    <!-- Image Carousel with Arrows -->
+    <section id="home" class="carousel-container">
+        <button class="arrow left-arrow" onclick="changeImage(-1)">&#10094;</button>
+        <img id="carouselImage" src="static/img/d1.jpg" alt="Dairy Farm" class="carousel-img">
+        <button class="arrow right-arrow" onclick="changeImage(1)">&#10095;</button>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="section">
+        <div id="about">
+            <h2>About Us</h2>
+            <p>We are a comprehensive Dairy Management System designed to streamline the daily operations of dairy farms. Our platform offers a complete set of tools for managing the dairy farm’s activities, providing a seamless experience for both dairy users and administrators.</p>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="section">
+        <h2>Our Services</h2>
+        <p>At Dairy Management System, we offer a wide range of services that cater to both dairy consumers and farmers. Here's what we provide:</p>
+        <div class="services-section">
+
+            <!-- Service 1 -->
+            <div class="service-card">
+                <img src="static/img/pd.jpg" alt="Dairy Products" class="service-img">
+                <h3>Provide Dairy Products</h3>
+                <p>We offer fresh dairy products to customers, ensuring premium quality and timely delivery. From milk to cheese, enjoy a variety of products for your daily needs.</p>
+            </div>
+
+            <!-- Service 2 -->
+            <div class="service-card">
+                <img src="static/img/ms.jpg" alt="Milk Supply from Farmers" class="service-img">
+                <h3>Milk Supply from Farmers</h3>
+                <p>We source high-quality milk directly from trusted farmers, ensuring that you receive fresh and organic milk every day. We are committed to supporting local farming communities.</p>
+            </div>
+
+            <!-- Service 3 -->
+            <div class="service-card">
+                <img src="static/img/fs.jpg" alt="Delivery Service" class="service-img">
+                <h3>Fresh Delivery Service</h3>
+                <p>Get your dairy products delivered right to your doorstep. We provide efficient and timely delivery services to ensure that you get fresh milk and other dairy items quickly.</p>
+            </div>
+
+            <!-- Service 4 -->
+            <div class="service-card">
+                <img src="static/img/sp.png" alt="Payment Service" class="service-img">
+                <h3>Secure Payment Options</h3>
+                <p>Make payments conveniently through our platform. We offer secure and easy-to-use payment methods for our customers, ensuring hassle-free transactions.</p>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="section">
+        <div id="contact">
+            <h2>Contact Us</h2>
+            <p>We at Sandy Dairy value your feedback and are here to assist you with any inquiries you may have. Feel free to contact us for any information regarding our dairy services, products, or partnership opportunities.</p>
+            <div class="contact-details">
+                <p><strong>Email:</strong> support@sandydairy.com</p>
+                <p><strong>Phone:</strong> +1 (555) 123-4567</p>
+                <p><strong>Address:</strong> 123 Dairy Lane, Milk City, Country</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Dairy Management System. All rights reserved.</p>
+    </footer>
+
+    <!-- JavaScript for image carousel with arrows -->
+    <script>
+        let currentImageIndex = 0;
+        const images = [
+            "static/img/d1.jpg",
+            "static/img/d2.jpg",
+            "static/img/d3.jpg",
+            "static/img/d4.jpg"
+        ];
+
+        function changeImage(direction) {
+            currentImageIndex = (currentImageIndex + direction + images.length) % images.length;
+            document.getElementById("carouselImage").src = images[currentImageIndex];
+        }
+    </script>
+</body>
+</html>

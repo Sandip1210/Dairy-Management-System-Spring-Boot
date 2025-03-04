@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Change Password</title>
+    <style>
+        /* General body and container styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        /* Input fields styling */
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        input[type="password"]:focus {
+            border-color: #007BFF;
+            outline: none;
+        }
+
+        /* Button styling */
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Label styling */
+        label {
+            text-align: left;
+            font-size: 14px;
+            margin-bottom: 6px;
+            color: #555;
+            display: block;
+        }
+
+        /* Message box for errors/success */
+        .message {
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        .error {
+            color: #f44336;
+        }
+
+        .success {
+            color: #4caf50;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Change Password</h2>
+        <div th:if="${param.error}">
+        <p>Something went wrong</p>
+        </div>
+        <form th:action="@{/change-password}" method="post" th:object="${ChangePassword}">
+            <div class="form-group">
+                <label for="oldPassword">Enter Old Password:</label>
+                <input type="password" id="oldPassword" name="oldPass" required>
+            </div>
+            <div class="form-group">
+                <label for="newPassword">Enter New Password:</label>
+                <input type="password" id="newPassword" name="newPass" required>
+            </div>
+            <input type="hidden" name="uId" th:value="${userId}">
+            <button type="submit">Change Password</button>
+
+            <!-- Display messages here if needed -->
+            <div class="message" th:if="${error}">
+                <p class="error" th:text="${error}"></p>
+            </div>
+            <div class="message" th:if="${success}">
+                <p class="success" th:text="${success}"></p>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
